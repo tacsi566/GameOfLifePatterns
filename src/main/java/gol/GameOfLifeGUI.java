@@ -276,6 +276,7 @@ public class GameOfLifeGUI implements ActionListener {
 	void nextGeneration() {
 
 		grid.nextGeneration();
+
 		//TODO optional call check stable
 		// grid.checkStable();
 	}
