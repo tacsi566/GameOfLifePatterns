@@ -277,6 +277,7 @@ public class GameOfLifeGUI implements ActionListener {
 
 		grid.nextGeneration();
 		//TODO optional call check stable
+		// grid.checkStable();
 	}
 
 	/** Resizes cellfield to given user values. */
