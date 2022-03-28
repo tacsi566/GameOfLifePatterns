@@ -8,6 +8,28 @@ public class GameOfLife {
 	
 	/** The gol grid. */
 	CellGrid golGrid;
+	private static GameOfLife instance;
+
+	/**
+	Making private constructor to avoid creating new objects outside this class.
+	 */
+
+	private GameOfLife(){
+
+	}
+
+
+	/**
+	 * This is the only method to create only ONE instance of this class. This should create an instance or return the already existing instance.
+	 */
+
+	public static GameOfLife getInstance(){
+		if (instance == null){
+			return new GameOfLife();
+		}
+		return instance;
+	}
+
 
 	/**
 	 * Inits the gol grid.
@@ -40,7 +62,7 @@ public class GameOfLife {
 	 * @param args the arguments
 	 */
 	public static void main(String[] args) {
-		GameOfLife gol = new GameOfLife();
+		GameOfLife gol = GameOfLife.getInstance();
 		gol.initGOLGrid(10, 10);
 		for(int i= 0; i<= 10; i++){
 			gol.startGOL();
