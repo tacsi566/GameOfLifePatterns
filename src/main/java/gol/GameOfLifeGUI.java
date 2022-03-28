@@ -243,7 +243,8 @@ public class GameOfLifeGUI implements ActionListener {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = saveChooser.getSelectedFile();
 			
-			//TODO call the corresponding  method
+
+			grid.saveGrid(file);
 			
 		} else {
 			System.out.println("Save command cancelled by user");
@@ -260,6 +261,7 @@ public class GameOfLifeGUI implements ActionListener {
 			File file = loadChooser.getSelectedFile();
 			
 			//TODO call the corresponding  method
+			grid.loadGrid(file);
 			
 			
 		} else {
@@ -272,8 +274,8 @@ public class GameOfLifeGUI implements ActionListener {
 	 * Refrshes states of shown cells.
 	 */
 	void nextGeneration() {
-		//TODO call the corresponding  method
 
+		grid.nextGeneration();
 		//TODO optional call check stable
 	}
 
@@ -284,7 +286,10 @@ public class GameOfLifeGUI implements ActionListener {
 		cellPanel.setLayout(new GridLayout(initSizeRows, initSizeColumns));
 		cellPanel.setPreferredSize(new Dimension(size * column, size * row));
 		
-		//TODO call the corresponding  method
+
+		grid = new CellGrid(column, row);
+
+
 		
 		initSizeRows = row;
 		initSizeColumns = column;
@@ -329,6 +334,8 @@ public class GameOfLifeGUI implements ActionListener {
 	 * Clear.
 	 */
 	private void clear() {
-		//TODO call the corresponding  method
+
+		grid.reset();
+
 	}
 }
