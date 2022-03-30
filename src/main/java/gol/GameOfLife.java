@@ -25,7 +25,7 @@ public class GameOfLife {
 
 	public static GameOfLife getInstance(){
 		if (instance == null){
-			return new GameOfLife();
+			instance =  new GameOfLife();
 		}
 		return instance;
 	}
