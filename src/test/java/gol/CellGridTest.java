@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// Link to repo https://github.com/tacsi566/GameOfLifePatterns.git
+
 public class CellGridTest {
 
     private static CellGrid cellGrid;
