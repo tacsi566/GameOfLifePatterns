@@ -3,7 +3,7 @@ package gol;
 /**
  * The Class Cell.
  */
-public class Cell{
+public class Cell extends Subject{
 
     /** The state. */
     private boolean state;
@@ -42,6 +42,7 @@ public class Cell{
      */
     public void setState(boolean state){
         this.state = state;
+        notifyUpdate(this);
     }
 
     @Override
