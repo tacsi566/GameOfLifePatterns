@@ -1,5 +1,7 @@
 package gol;
 
+import gol.observer.MyJButton;
+
 import java.awt.event.*;
 
 import javax.swing.*;
@@ -199,7 +201,22 @@ public class GameOfLifeGUI implements ActionListener {
 		//Buttons have to be added to the GUI and connected with the Cell
 		//Do not use the observer interface of java
 		
-		
+		drawGrid();
+	}
+
+
+
+	private void drawGrid(){
+		for (int row = 0; row < grid.getRows(); row++){
+			for (int col = 0; col < grid.getCols(); col++){
+				MyJButton button = new MyJButton();
+				grid.getCell(row, col).setState(grid.getCellState(row, col));
+				button.setText(grid.getCell(row, col).toString());
+				cellPanel.add(button);
+				button.addActionListener(this);
+				button.setActionCommand(row + " " + col);
+			}
+		}
 		cellPanel.updateUI();
 		frame.pack();
 		frame.setVisible(true);
@@ -328,7 +345,12 @@ public class GameOfLifeGUI implements ActionListener {
 		} else {
             //TODO optional react on button events to switch the state of the button
             //this can be used for customizing the field
-			System.out.println("Action not processed: "+sAction);
+			String[] btn = sAction.split(" ");
+			int row = Integer.parseInt(btn[0]);
+			int col = Integer.parseInt(btn[1]);
+			Cell c = grid.getCell(row, col);
+			c.setState(!c.getState());
+			System.out.println("Cell row: " + row + " " + col + " changed to: " + c.getState());
 		}
 	}
 
