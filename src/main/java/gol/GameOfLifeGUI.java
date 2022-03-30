@@ -1,5 +1,7 @@
 package gol;
 
+import gol.observer.MyJButton;
+
 import java.awt.event.*;
 
 import javax.swing.*;
@@ -38,6 +40,11 @@ public class GameOfLifeGUI implements ActionListener {
 	
 	/** The Constant ACTION_COMMAND_FILE. */
 	private static final String ACTION_COMMAND_FILE   = "File";
+
+	/** The Constant ACTION_COMMAND_RANDOMIZE. */
+	private static final String ACTION_COMMAND_RANDOMIZE   = "Randomize";
+
+
 	
 	/** The menu bar. */
 	private JMenuBar	menuBar				= new JMenuBar();
@@ -77,6 +84,11 @@ public class GameOfLifeGUI implements ActionListener {
 	
 	/** The button resize. */
 	private JButton		buttonResize		= new JButton(ACTION_COMMAND_RESIZE);
+
+	/** The button randomize. */
+	private JButton buttonRandomize = new JButton(ACTION_COMMAND_RANDOMIZE);
+
+
 	
 	/** The text field speed. */
 	private JTextField	textFieldSpeed		= new JTextField(3);
@@ -168,10 +180,12 @@ public class GameOfLifeGUI implements ActionListener {
 		buttonPanel.add(labelColumn);
 		buttonPanel.add(textFieldColumn);
 		buttonPanel.add(buttonResize);
+		buttonPanel.add(buttonRandomize);
 		buttonClear.addActionListener(this);
 		buttonNext.addActionListener(this);
 		buttonStartStop.addActionListener(this);
 		buttonResize.addActionListener(this);
+		buttonRandomize.addActionListener(this);
 
 		// Completing frame
 		frame.getContentPane().add(cellPanel, BorderLayout.NORTH);
@@ -195,11 +209,27 @@ public class GameOfLifeGUI implements ActionListener {
 		cellPanel.setLayout(new GridLayout(grid.getRows(), grid.getCols()));
 		cellPanel.setPreferredSize(new Dimension(size * grid.getCols(), size * grid.getRows()));
 				
-		//TODO Add the Observer Pattern here 
+
 		//Buttons have to be added to the GUI and connected with the Cell
 		//Do not use the observer interface of java
 		
-		
+		observer();
+	}
+
+
+
+	private void observer(){
+		for (int row = 0; row < grid.getRows(); row++){
+			for (int col = 0; col < grid.getCols(); col++){
+				MyJButton button = new MyJButton();
+				grid.getCell(row, col).attach(button);
+				grid.getCell(row, col).notifyUpdate(grid.getCell(row, col));
+				cellPanel.add(button);
+				button.addActionListener(this);
+				button.setActionCommand(row + " " + col);
+
+			}
+		}
 		cellPanel.updateUI();
 		frame.pack();
 		frame.setVisible(true);
@@ -260,7 +290,7 @@ public class GameOfLifeGUI implements ActionListener {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = loadChooser.getSelectedFile();
 			
-			//TODO call the corresponding  method
+
 			grid.loadGrid(file);
 			
 			
@@ -276,6 +306,7 @@ public class GameOfLifeGUI implements ActionListener {
 	void nextGeneration() {
 
 		grid.nextGeneration();
+
 		//TODO optional call check stable
 		// grid.checkStable();
 	}
@@ -324,19 +355,31 @@ public class GameOfLifeGUI implements ActionListener {
 			loadFile();
 		} else if (ACTION_COMMAND_SAVE.equals(sAction)) {
 			saveFile();
-		} else {
-            //TODO optional react on button events to switch the state of the button
-            //this can be used for customizing the field
-			System.out.println("Action not processed: "+sAction);
+		} else if (ACTION_COMMAND_RANDOMIZE.equals(sAction)){
+			randomize();
+		}else{
+
+			//this can be used for customizing the field
+			String[] btn = sAction.split(" ");
+			int row = Integer.parseInt(btn[0]);
+			int col = Integer.parseInt(btn[1]);
+			Cell c = grid.getCell(row, col);
+			c.setState(!c.getState());
+			System.out.println("Cell row: " + row + " " + col + " changed to: " + c.getState());
 		}
+	}
+
+	private void randomize(){
+		cellPanel.removeAll();
+		grid.randomize();
+		observer();
 	}
 
 	/**
 	 * Clear.
 	 */
 	private void clear() {
-
 		grid.reset();
-
+		initField();
 	}
 }
